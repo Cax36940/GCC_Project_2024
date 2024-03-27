@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dk236cuvs8s1k"]
+
+[ext_resource type="Script" path="res://UI/TimeLine.gd" id="1_a07rk"]
+
+[node name="TimeLine" type="Node2D"]
+script = ExtResource("1_a07rk")
