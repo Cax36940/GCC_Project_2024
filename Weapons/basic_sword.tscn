@@ -1,0 +1,220 @@
+[gd_scene load_steps=25 format=3 uid="uid://kgfg37j714cu"]
+
+[ext_resource type="Script" path="res://Weapons/basic_sword.gd" id="1_bxduw"]
+[ext_resource type="Texture2D" uid="uid://dtwqjuev6exqp" path="res://Weapons/basic-sword.png" id="2_38e6y"]
+
+[sub_resource type="Animation" id="Animation_8fof7"]
+resource_name = "prepare_swing_right"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.9635]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.3, 0.982194, -2.2, -0.2, -1.24618, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_t3qtq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.9635]
+}
+
+[sub_resource type="Animation" id="Animation_5cted"]
+resource_name = "prepare_swing_left"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 3
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.9635]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.3, -0.893354, 2.2, -0.2, 1.33502, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_hd25a"]
+resource_name = "swing_right"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-2.2, -0.25, 0, 0.2999, 3.49479, 2.2, -0.2, 1.17873, 0.25, 0),
+"times": PackedFloat32Array(0.0001, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_hsreb"]
+resource_name = "swing_left"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(2.2, -0.25, 0, 0.2999, -0.227933, -2.2, -0.2, -1.66509, 0.25, 0),
+"times": PackedFloat32Array(0.0001, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_ciajj"]
+resource_name = "idle_right"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-2.2, -0.25, 0, 0.25, 0, -2.2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="Animation" id="Animation_pi701"]
+resource_name = "idle_left"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(2.2, -0.25, 0, 0.25, 0, 2.2, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lb7jk"]
+_data = {
+"RESET": SubResource("Animation_t3qtq"),
+"idle_left": SubResource("Animation_pi701"),
+"idle_right": SubResource("Animation_ciajj"),
+"prepare_swing_left": SubResource("Animation_5cted"),
+"prepare_swing_right": SubResource("Animation_8fof7"),
+"swing_left": SubResource("Animation_hsreb"),
+"swing_right": SubResource("Animation_hd25a")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sdphs"]
+animation = &"idle_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ibwop"]
+animation = &"idle_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3cvpg"]
+animation = &"prepare_swing_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_54de7"]
+animation = &"prepare_swing_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pgdvl"]
+animation = &"swing_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l2sjs"]
+animation = &"swing_right"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7xme3"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1x77j"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_30bra"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_834ej"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bwjkt"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pf37i"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6lamw"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_bykil"]
+states/End/position = Vector2(1041, 105)
+states/idle_left/node = SubResource("AnimationNodeAnimation_sdphs")
+states/idle_left/position = Vector2(585, 243)
+states/idle_right/node = SubResource("AnimationNodeAnimation_ibwop")
+states/idle_right/position = Vector2(565, 123)
+states/prepare_swing_left/node = SubResource("AnimationNodeAnimation_3cvpg")
+states/prepare_swing_left/position = Vector2(325, 204)
+states/prepare_swing_right/node = SubResource("AnimationNodeAnimation_54de7")
+states/prepare_swing_right/position = Vector2(377, 92)
+states/swing_left/node = SubResource("AnimationNodeAnimation_pgdvl")
+states/swing_left/position = Vector2(768, 309)
+states/swing_right/node = SubResource("AnimationNodeAnimation_l2sjs")
+states/swing_right/position = Vector2(787, 118)
+transitions = ["Start", "prepare_swing_right", SubResource("AnimationNodeStateMachineTransition_7xme3"), "prepare_swing_right", "idle_right", SubResource("AnimationNodeStateMachineTransition_1x77j"), "prepare_swing_left", "idle_left", SubResource("AnimationNodeStateMachineTransition_30bra"), "idle_right", "swing_right", SubResource("AnimationNodeStateMachineTransition_834ej"), "idle_left", "swing_left", SubResource("AnimationNodeStateMachineTransition_bwjkt"), "swing_right", "idle_left", SubResource("AnimationNodeStateMachineTransition_pf37i"), "swing_left", "idle_right", SubResource("AnimationNodeStateMachineTransition_6lamw")]
+
+[node name="BasicSword" type="Node2D"]
+rotation = -1.9635
+script = ExtResource("1_bxduw")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -42)
+scale = Vector2(0.05, 0.052)
+texture = ExtResource("2_38e6y")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lb7jk")
+}
+tree_root = SubResource("AnimationNodeStateMachine_bykil")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lb7jk")
+}
