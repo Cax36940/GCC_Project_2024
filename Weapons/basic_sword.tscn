@@ -218,3 +218,5 @@ anim_player = NodePath("../AnimationPlayer")
 libraries = {
 "": SubResource("AnimationLibrary_lb7jk")
 }
+
+[node name="Camera2D" type="Camera2D" parent="."]

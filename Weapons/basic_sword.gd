@@ -1,37 +1,44 @@
 extends Node2D
 #extends Weapons(subclass with set_degat and stuff)
 
-
-
 @onready var damage : int = 0
 @onready var tempo : Array[bool] = []
-@onready var animation_player = $AnimationPlayer
+@onready var animation_player : AnimationPlayer = $AnimationPlayer
+@onready var animation_tree : AnimationTree = $AnimationTree
+@onready var state_machine = animation_tree["parameters/playback"]
 
 signal attack_finished
 
 enum STATES {
-	IDLE ,
-	ATTACK
+	IDLE = 0,
+	ATTACK = 1
 }
 
-var current_state = STATES.IDLE
+var current_state : int = STATES.IDLE
 
 func _ready() -> void:
-	#Tempo set (dEMI_TEMPS, [1,1])
 	set_degat(10)
 	set_tempo([1,1])
+	animation_tree.active = true
 	return
 
 func set_degat(damage : int) -> void:
 	self.damage = damage
+	#Signal doing attack ???
 	return
 
 func set_tempo(tempo : Array[bool]) -> void:
 	self.tempo = tempo
 	return
 
-func _process(delta) -> void:
-	if (Input.is_action_just_pressed("ui_accept")):
-		pass
-	pass
+func _input(event):
+	if (event is InputEventKey):
+		if (event.is_action_pressed("ui_accept")):
+			if (rotation < 2.3) and (rotation > 2.1):
+				state_machine.travel("swing_left")
+			if (rotation > -2.3) and (rotation < -2.1):
+				state_machine.travel("swing_right")
 
+func _process(delta : float) -> void:
+	#Player or weapon receives signal for attack
+	return
