@@ -1,4 +1,5 @@
 extends Node2D
+class_name Timeline
 
 const MAX_SUBDIV: int = 8 # Eighth of a beat
 const OFFBEAT: float = INF
