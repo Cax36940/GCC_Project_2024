@@ -20,6 +20,7 @@ func _ready() -> void:
 	set_degat(10)
 	set_tempo([1,1])
 	animation_tree.active = true
+	rotation = 0
 	return
 
 func set_degat(damage : int) -> void:
