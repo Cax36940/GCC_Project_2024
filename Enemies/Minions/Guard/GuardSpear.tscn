@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxsjmwann4u3y"]
+
+[ext_resource type="Texture2D" uid="uid://b4h6qk3ju5tfb" path="res://icon.svg" id="1_fjnp2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w5d1n"]
+
+[node name="GuardSpear" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_fjnp2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_w5d1n")
