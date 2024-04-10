@@ -6,30 +6,29 @@ const OFFBEAT: float = INF
 
 
 var total_time: float
-var bpm: float = 120.0
+var bpm: float = 60.0
 var subdiv: int = 0 # updated each frame
 
 var pattern = [0]
-var received_pattern = [] # 1 when received correct input, 0 when wrong/no input
+var received_pattern = [0] # 1 when received correct input, 0 when wrong/no input
 var max_error: float = 1.0 # 1.0 = 100% = 16th of a beat
+var offset = 0
 
-const BEAT_REF_POS = 250
-const NUM_BEAT_MARKS = 10
-const WIDTH = 1152
-const PADX = 50
-const PADY = 60
-const DIST_BEAT_MARKS = (WIDTH - 2*PADX) / NUM_BEAT_MARKS
-var beatmark = load("res://UI/Timeline/Beatmark.tscn")
+const SPRITE_POS_ON_TIME = 0 # TODO Sync with beat
+const SPRITE_DIST_EACH_TIME = 100 # Depends on the png image
+
+const TEXTURE_PATTERN_BEAT = preload("res://UI/Timeline/pattern_beat.png")
+const TEXTURE_PATTERN_HALF_BEAT = preload("res://UI/Timeline/pattern_half_beat.png")
+const TEXTURE_PATTERN_QUARTER_BEAT = preload("res://UI/Timeline/pattern_quarter_beat.png")
+
+
+var awaiting = true
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	reset_time()
-	var b = beatmark.instantiate()
-	b.set_speed(0)
-	b.global_position = Vector2(BEAT_REF_POS, PADY)
-	b.rotation = PI
-	add_child(b)
+	set_pattern([1, 0, 1, 0, 1, 0, 1, 1])
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -37,19 +36,23 @@ func _process(delta):
 	total_time += delta
 	var prev_subdiv = subdiv
 	subdiv = get_subdiv_at_time()
-	if prev_subdiv / MAX_SUBDIV != subdiv / MAX_SUBDIV:
-		make_new_beatmark()
-	elif prev_subdiv * 2 / MAX_SUBDIV != subdiv * 2 / MAX_SUBDIV and subdiv > MAX_SUBDIV:
-		make_new_beatmark(1)
+	set_sprite_pos(total_time)
 	check_input_missed()
 
 
 func reset_time(t=0.0):
 	total_time = t
+	set_sprite_pos(t)
+
+
+func await_pattern():
+	awaiting = true
 
 
 func set_pattern(p):
 	pattern = p
+	received_pattern = p
+	make_pattern_sprites()
 
 
 func set_max_error(e):
@@ -58,15 +61,45 @@ func set_max_error(e):
 
 func get_input_error(input_received=1):
 	var error = get_subdiv_error()
-	var input_on_subdiv = get_pattern_at_subdiv()
-	if input_on_subdiv != input_received:
-		return OFFBEAT
-	else:
+	if awaiting:
+		awaiting = false
+		offset = subdiv
+		return error
+	elif get_pattern_at_subdiv() == input_received:
 		received_pattern[subdiv % len(pattern)] = input_received
 		return error
+	else:
+		return OFFBEAT
 
 
 ### PRIVATE ###
+
+func make_pattern_sprites():
+	for c in $Pattern_sprites.get_children():
+		c.free()
+	for i in range(len(pattern)):
+		if pattern[i]:
+			var c = Sprite2D.new()
+			c.set_name("Sprite"+str(i))
+			if i % MAX_SUBDIV == 0:
+				c.texture = TEXTURE_PATTERN_BEAT
+			elif i % MAX_SUBDIV == MAX_SUBDIV / 2:
+				c.texture = TEXTURE_PATTERN_HALF_BEAT
+			else:
+				c.texture = TEXTURE_PATTERN_QUARTER_BEAT
+			c.position.x = i * SPRITE_DIST_EACH_TIME / MAX_SUBDIV
+			$Pattern_sprites.add_child(c)
+
+func set_sprite_pos(t):
+	var beat = bpm * t / 60.0
+	var p = fmod(beat, 1)
+	$Sprite2D.position.x = SPRITE_POS_ON_TIME - SPRITE_DIST_EACH_TIME * p
+	if awaiting:
+		# Redish on beat
+		var gb = 1 - (2*p - 1) ** 4
+		$Pattern_sprites.modulate = Color(1, gb, gb)
+	else:
+		$Pattern_sprites.position.x = SPRITE_POS_ON_TIME - SPRITE_DIST_EACH_TIME * fmod(beat, len(pattern))
 
 func get_subdiv_at_time(time=total_time):
 	return bpm * time * MAX_SUBDIV / 60
@@ -96,11 +129,3 @@ func check_input_missed():
 				return
 	return
 
-func make_new_beatmark(half=0):
-	var b = beatmark.instantiate()
-	b.set_speed(DIST_BEAT_MARKS * bpm / 60)
-	b.global_position = Vector2(BEAT_REF_POS + NUM_BEAT_MARKS * DIST_BEAT_MARKS, PADY)
-	add_child(b)
-	if half:
-		b.scale = 0.5 * Vector2(1, 1)
-	return
