@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://hecrlypehuc"]
+
+[ext_resource type="Script" path="res://Weapons/BaseWeapon.gd" id="1_m615i"]
+
+[node name="BaseWeapon" type="Node2D"]
+script = ExtResource("1_m615i")
+pattern = Array[int]([1, 1, 0])
