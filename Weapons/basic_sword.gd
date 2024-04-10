@@ -5,7 +5,8 @@ extends Node2D
 @onready var tempo : Array[bool] = []
 @onready var animation_player : AnimationPlayer = $AnimationPlayer
 @onready var animation_tree : AnimationTree = $AnimationTree
-@onready var state_machine = animation_tree["parameters/playback"]
+@onready var state_machine : AnimationNodeStateMachinePlayback = animation_tree.get("parameters/playback")
+@onready var node_sprite = $Sprite 
 
 signal attack_finished
 
@@ -35,9 +36,10 @@ func set_tempo(tempo : Array[bool]) -> void:
 func _input(event):
 	if (event is InputEventKey):
 		if (event.is_action_pressed("ui_accept")):
-			if (rotation < 2.3) and (rotation > 2.1):
+			var angle = node_sprite.rotation
+			if (angle < 2.3) and (angle > 2.1):
 				state_machine.travel("swing_left")
-			if (rotation > -2.3) and (rotation < -2.1):
+			if (angle > -2.3) and (angle < -2.1):
 				state_machine.travel("swing_right")
 
 func _process(delta : float) -> void:

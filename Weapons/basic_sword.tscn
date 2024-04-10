@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://kgfg37j714cu"]
+[gd_scene load_steps=27 format=3 uid="uid://kgfg37j714cu"]
 
 [ext_resource type="Script" path="res://Weapons/basic_sword.gd" id="1_bxduw"]
 [ext_resource type="Texture2D" uid="uid://dtwqjuev6exqp" path="res://Weapons/basic-sword.png" id="2_38e6y"]
@@ -164,12 +164,15 @@ transitions = ["Start", "prepare_swing_right", SubResource("AnimationNodeStateMa
 graph_offset = Vector2(-77, 133)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1wkpu"]
+size = Vector2(10.4, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pdfw1"]
+size = Vector2(203.5, 77)
 
 [node name="BasicSword" type="Node2D"]
 script = ExtResource("1_bxduw")
 
 [node name="Sprite" type="Node2D" parent="."]
-rotation = 2.2
 scale = Vector2(0.05, 0.052)
 
 [node name="Sprite" type="Sprite2D" parent="Sprite"]
@@ -184,7 +187,7 @@ tree_root = SubResource("AnimationNodeStateMachine_bykil")
 anim_player = NodePath("../AnimationPlayer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-active = false
+deterministic = true
 libraries = {
 "": SubResource("AnimationLibrary_lb7jk")
 }
@@ -195,7 +198,19 @@ libraries = {
 collision_layer = 2
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, -40)
+[node name="hitbox1" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-52, 0)
 scale = Vector2(10, 4)
 shape = SubResource("RectangleShape2D_1wkpu")
+disabled = true
+
+[node name="hitbox2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -40)
+shape = SubResource("RectangleShape2D_pdfw1")
+disabled = true
+
+[node name="hitbox3" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(52, 0)
+scale = Vector2(10, 4)
+shape = SubResource("RectangleShape2D_1wkpu")
+disabled = true
