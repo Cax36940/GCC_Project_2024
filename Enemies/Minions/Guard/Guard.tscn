@@ -8,7 +8,7 @@ radius = 63.0
 height = 126.0
 
 [node name="Guard" type="CharacterBody2D"]
-position = Vector2(489, 321)
+position = Vector2(1, -1)
 script = ExtResource("1_mecxc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -22,4 +22,4 @@ texture = ExtResource("2_uu6c1")
 [node name="AttackSound" type="AudioStreamPlayer2D" parent="."]
 
 [node name="SpearEdge" type="Marker2D" parent="."]
-position = Vector2(0, -89)
+position = Vector2(2.08165e-12, -180)
