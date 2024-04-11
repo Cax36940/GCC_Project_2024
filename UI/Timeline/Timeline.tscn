@@ -1,15 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkmut24gm21w7"]
+[gd_scene load_steps=4 format=3 uid="uid://bkmut24gm21w7"]
 
 [ext_resource type="Script" path="res://UI/Timeline/Timeline.gd" id="1_2uxv7"]
 [ext_resource type="Texture2D" uid="uid://idqyrn8ee8ik" path="res://UI/Timeline/timeline.png" id="2_weawo"]
+[ext_resource type="Texture2D" uid="uid://cxn5o8fsstwxv" path="res://UI/Timeline/square.png" id="3_ljm44"]
 
 [node name="Timeline" type="Node2D"]
 script = ExtResource("1_2uxv7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.894118, 0.945098, 0.0470588, 1)
 position = Vector2(0, 50)
 texture = ExtResource("2_weawo")
 offset = Vector2(999, 0)
 
 [node name="Pattern_sprites" type="Node2D" parent="."]
-position = Vector2(300, 50)
+position = Vector2(200, 49)
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(199.5, 12)
+scale = Vector2(0.002, 0.24)
+texture = ExtResource("3_ljm44")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(199.5, 87)
+scale = Vector2(0.002, 0.24)
+texture = ExtResource("3_ljm44")
