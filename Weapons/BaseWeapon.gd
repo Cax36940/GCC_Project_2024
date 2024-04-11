@@ -13,19 +13,21 @@ var timeline : Timeline
 @export var pattern : Array[int]
 @export var minimal_beat = beats.HALF
 
+@export var error_margin = 350
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	timeline = $"../Timeline"
-	_compute_real_pattern()
+	compute_real_pattern()
 	setup()
 	
 
 func setup():
+	timeline.set_max_error(error_margin)
 	timeline.set_pattern(pattern)
 	timeline.await_pattern()
 
-
-func _compute_real_pattern():
+func compute_real_pattern():
 	var current_beat = minimal_beat
 	while current_beat != beats.MAX_VALUE:
 		for i in range(pattern.size(), 0, -1):
@@ -40,11 +42,16 @@ func _process(delta):
 	var error = 0
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		error = timeline.get_input_error()
+		_on_input(error)
 
 
-func get_miss_input():
-	restart_pattern()
+func _on_input(error):
+	pass
 
 
-func restart_pattern():
+func _get_miss_input():
+	_restart_pattern()
+
+
+func _restart_pattern():
 	timeline.await_pattern()

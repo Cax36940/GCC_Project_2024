@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdyycdp2esmi4"]
+
+[ext_resource type="Script" path="res://Weapons/TemplateWeapon/TemplateWeapon.gd" id="1_tfs1o"]
+
+[node name="TemplateWeapon" type="Node2D"]
+script = ExtResource("1_tfs1o")
