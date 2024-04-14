@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkxbq46u4qt07"]
+
+[ext_resource type="PackedScene" uid="uid://bkmut24gm21w7" path="res://UI/Timeline/Timeline.tscn" id="1_y8prk"]
+[ext_resource type="PackedScene" uid="uid://cdyycdp2esmi4" path="res://Weapons/TemplateWeapon/TemplateWeapon.tscn" id="2_7wujc"]
+
+[node name="TestRoom" type="Node2D"]
+
+[node name="Timeline" parent="." instance=ExtResource("1_y8prk")]
+
+[node name="TemplateWeapon" parent="." instance=ExtResource("2_7wujc")]

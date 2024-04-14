@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Weapons/basic_sword.gd" id="1_bxduw"]
 [ext_resource type="Texture2D" uid="uid://dtwqjuev6exqp" path="res://Weapons/basic-sword.png" id="2_38e6y"]
-[ext_resource type="Texture2D" uid="uid://bumt3etcyscbq" path="res://Weapons/tribal/spritesheet_pixelorama.png" id="3_mtb3w"]
+[ext_resource type="Texture2D" uid="uid://b318sgny06r7m" path="res://Weapons/tribal/spritesheet_pixelorama.png" id="3_mtb3w"]
 
 [sub_resource type="Animation" id="Animation_t3qtq"]
 length = 0.001

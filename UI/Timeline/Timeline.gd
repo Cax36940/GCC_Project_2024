@@ -27,6 +27,7 @@ const TEXTURE_PATTERN_QUARTER_BEAT = preload("res://UI/Timeline/pattern_quarter_
 
 var awaiting = true
 
+signal input_missed
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -171,6 +172,7 @@ func check_input_missed():
 		if pattern[i] != 0 and received_pattern[i] != pattern[i]:
 			# subdiv missed, checking if error is still in the bounds for now
 			if get_subdiv_error() > max_error:
-				# TODO : send signal "input missed" to weapon
+				print("missed (from Timeline.gd)")
+				input_missed.emit()
 				return
 	return

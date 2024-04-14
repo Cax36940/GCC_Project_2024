@@ -5,7 +5,7 @@ enum beats {
 	FULL = 1,
 	HALF = 2,
 	QUARTER = 4,
-	HEIGTH = 8,
+	EIGTH = 8,
 	MAX_VALUE = 8
 }
 
@@ -26,26 +26,27 @@ func setup():
 	timeline.set_max_error(error_margin)
 	timeline.set_pattern(pattern)
 	timeline.await_pattern()
+	timeline.input_missed.connect(_get_miss_input)
 
 func compute_real_pattern():
 	var current_beat = minimal_beat
 	while current_beat != beats.MAX_VALUE:
 		for i in range(pattern.size(), 0, -1):
 			pattern.insert(i, 0)
-		current_beat *= 2
+		current_beat = (current_beat * 2) as beats
 	while pattern.size() % beats.MAX_VALUE != 0:
 		pattern.append(0)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	var error = 0
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_action_just_pressed("attack"):
 		error = timeline.get_input_error()
 		_on_input(error)
 
 
-func _on_input(error):
+func _on_input(_error):
 	pass
 
 
