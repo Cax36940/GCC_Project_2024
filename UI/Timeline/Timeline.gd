@@ -9,7 +9,7 @@ func rounduptobeat(n):
 
 
 var total_time: float
-var bpm: float = 60.0
+var bpm: float = 10.0
 var subdiv: int = 0 # updated each frame
 
 var pattern = [0]
@@ -176,7 +176,8 @@ func get_subdiv_index():
 func go_to_next_pattern_subdiv_input():
 	next_pattern_subdiv_input = get_next_non_zero_pattern(next_pattern_subdiv_input + 1)
 	next_global_subdiv_input = offset + next_pattern_subdiv_input
-	if next_global_subdiv_input < subdiv:
+	while next_global_subdiv_input < subdiv:
+		# Look for subdiv in next pattern, not current one
 		next_global_subdiv_input += len(pattern)
 
 
@@ -193,9 +194,10 @@ func get_pattern_at_subdiv(subdiv_ind=subdiv):
 
 
 func check_input_missed():
-	if get_subdiv_error(next_global_subdiv_input) < -max_error:
+	if get_subdiv_error(next_global_subdiv_input) > max_error:
 		print("missed (from Timeline.gd)")
 		go_to_next_pattern_subdiv_input()
+		print("now awaiting : "+str(next_pattern_subdiv_input)+" (global : "+str(next_global_subdiv_input))
 		input_missed.emit()
 		return
 	return
