@@ -1,4 +1,4 @@
-extends Node2D
+"""extends Node2D
 class_name Timeline
 
 const MAX_SUBDIV: int = 8 # Eighth of a beat
@@ -9,15 +9,13 @@ func rounduptobeat(n):
 
 
 var total_time: float
-var bpm: float = 60.0
+var bpm: float = 10.0
 var subdiv: int = 0 # updated each frame
 
 var pattern = [0]
 var received_pattern = [0] # 1 when received correct input, 0 when wrong/no input
 var max_error: float = 1.0 # 1.0 = 100% = 16th of a beat
 var offset = 0
-var next_pattern_subdiv_input = 0
-var next_global_subdiv_input = 0
 
 const SPRITE_POS_ON_TIME = 0 # TODO Sync with beat
 const SPRITE_DIST_EACH_TIME = 100 # Depends on the png image
@@ -61,7 +59,6 @@ func reset_time(t=0.0):
 func await_pattern():
 	print("Timeline: WAITING FOR INPUT")
 	awaiting = true
-	next_pattern_subdiv_input = get_next_non_zero_pattern(0)
 	make_pattern_sprites()
 
 
@@ -69,18 +66,12 @@ func start_pattern(new_offset=subdiv):
 	print("Timeline: PATTERN STARTED")
 	awaiting = false
 	offset = new_offset
-	next_pattern_subdiv_input = get_next_non_zero_pattern(1)
-	next_global_subdiv_input = offset + next_pattern_subdiv_input
 	make_all_pattern_sprites()
 
 
 func set_pattern(p):
-	pattern = []
-	received_pattern = []
-	# Copy
-	for i in p:
-		pattern.append(i)
-		received_pattern.append(i)
+	pattern = p
+	received_pattern = p
 	make_pattern_sprites()
 
 
@@ -90,23 +81,22 @@ func set_max_error(e):
 
 func get_input_error(input_received=1):
 	# 1600% = 1 beat
-	var error_on_beat = closest_to_zero(get_subdiv_error(subdiv - subdiv%MAX_SUBDIV), get_subdiv_error(subdiv - subdiv%MAX_SUBDIV + MAX_SUBDIV))
+	var error = get_subdiv_error()
 	
-	var error = get_subdiv_error(next_global_subdiv_input)
-	print("(error on beat :"+str(error_on_beat)+"/"+str(max_error)+")")
-	print("(error on next subdiv :"+str(get_subdiv_error(next_global_subdiv_input))+"/"+str(max_error)+")")
-	if awaiting and abs(error_on_beat) < max_error:
-		print("Timeline: CORRECT FIRST INPUT (error on beat :"+str(error_on_beat)+"/"+str(max_error)+")")
+	# 100% = 1 beat
+	var error_on_time = closest_to_zero(get_subdiv_error(subdiv - subdiv%MAX_SUBDIV), get_subdiv_error(subdiv - subdiv%MAX_SUBDIV + MAX_SUBDIV))
+	
+	var pattern_subdiv_index = (subdiv - offset) % len(pattern)
+	if awaiting and abs(error_on_time) < max_error:
+		print("Timeline: CORRECT FIRST INPUT (error on time :"+str(error_on_time)+"/"+str(max_error * 2 * MAX_SUBDIV)+")")
 		start_pattern(closest_div())
-		print("Next subdiv awaited : "+str(next_pattern_subdiv_input))
-		return error_on_beat
-	elif abs(error) < max_error:
+		return error
+	elif get_pattern_at_subdiv(pattern_subdiv_index) == input_received and abs(error) < max_error:
 		print("Timeline: CORRECT INPUT")
-		received_pattern[next_pattern_subdiv_input] = input_received
-		go_to_next_pattern_subdiv_input()
-		print("Next subdiv awaited : "+str(next_pattern_subdiv_input))
+		received_pattern[pattern_subdiv_index] = input_received
 		return error
 	else:
+		print(pattern_subdiv_index, " ", get_pattern_at_subdiv(pattern_subdiv_index), " ", input_received, " error: ", error, "/", max_error)
 		print("Timeline: OFFBEAT")
 		return OFFBEAT
 
@@ -173,19 +163,13 @@ func get_subdiv_index():
 	return ind
 
 
-func go_to_next_pattern_subdiv_input():
-	next_pattern_subdiv_input = get_next_non_zero_pattern(next_pattern_subdiv_input + 1)
-	next_global_subdiv_input = offset + next_pattern_subdiv_input
-	if next_global_subdiv_input < subdiv:
-		next_global_subdiv_input += len(pattern)
-
-
 func get_subdiv_error(subdiv_ind=subdiv):
+	var dbeat = (get_subdiv_at_time() - subdiv_ind) * MAX_SUBDIV * 2
 	# half eighth delta :
 	# 100% for half eighth too late
 	# 1600% for one beat too late
 	# negative when too early
-	return total_time - subdiv_ind * 60 / (bpm * MAX_SUBDIV)
+	return dbeat
 
 
 func get_pattern_at_subdiv(subdiv_ind=subdiv):
@@ -193,22 +177,14 @@ func get_pattern_at_subdiv(subdiv_ind=subdiv):
 
 
 func check_input_missed():
-	if get_subdiv_error(next_global_subdiv_input) < -max_error:
-		print("missed (from Timeline.gd)")
-		go_to_next_pattern_subdiv_input()
-		input_missed.emit()
-		return
+	for i in range(subdiv % len(pattern)):
+		if pattern[i] != 0 and received_pattern[i] != pattern[i]:
+			# subdiv missed, checking if error is still in the bounds for now
+			if get_subdiv_error() > max_error:
+				print("missed (from Timeline.gd)")
+				input_missed.emit()
+				return
 	return
-
-
-func get_next_non_zero_pattern(ind):
-	for i in range(ind, len(pattern)):
-		if pattern[i] != 0:
-			return i
-	for i in range(len(pattern)):
-		if pattern[i] != 0:
-			return i
-	print("PATTERN EQUAL TO ZERO !!")
 
 
 func closest_to_zero(a, b):
@@ -222,3 +198,4 @@ func closest_div(subdiv=subdiv):
 		return subdiv - in_time_offset
 	else:
 		return subdiv - in_time_offset + MAX_SUBDIV
+"""

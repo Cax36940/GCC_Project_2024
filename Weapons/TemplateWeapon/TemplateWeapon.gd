@@ -11,8 +11,8 @@ var valid_charges = 0
 func _ready():
 	minimal_beat = beats.QUARTER
 	pattern = [1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1]
-	error_margin = 200 # 100 means that error margins perfectly match or eigths of beats, 
-	# so 200 here means that you can't offbeat (200 is a eigth of beat)
+	error_margin = 2.0 # 1.0 = 100% means that error margins perfectly match or eigths of beats, 
+	# so 200% here means that you can't offbeat (200% is a eigth of beat)
 	
 	super() # very important to call super() here (and after setting pattern)
 	# as some setup has to be done by the base class

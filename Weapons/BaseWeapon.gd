@@ -13,7 +13,7 @@ var timeline : Timeline
 @export var pattern : Array[int]
 @export var minimal_beat = beats.HALF
 
-@export var error_margin = 350
+@export var error_margin = 3.5 # 350%
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,7 +40,7 @@ func compute_real_pattern():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	var error = 0
+	var error = 0.0
 	if Input.is_action_just_pressed("attack"):
 		error = timeline.get_input_error()
 		_on_input(error)
